@@ -14,8 +14,8 @@ export const createPost = async (req, res) => {
 export const getPosts = async (req, res) => {
     try {
         const posts = await Post.find()
-            .populate("user", "name")
-            .populate("comments.user", "name")
+            .populate("user", "name profilePic")
+            .populate("comments.user", "name profilePic")
             .sort({ createdAt: -1 });
         res.json(posts);
     } catch (err) {
@@ -32,7 +32,7 @@ export const addComment = async (req, res) => {
         post.comments.push({ user: req.user._id, text: req.body.text });
         await post.save();
 
-        const updated = await Post.findById(req.params.id).populate("comments.user", "name");
+        const updated = await Post.findById(req.params.id).populate("comments.user", "name profilePic");
         res.json(updated);
     } catch (err) {
         res.status(500).json({ message: "Server Error" });

@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({ _id: { $ne: req.user._id } })
-            .select("name email followers following");
+            .select("name email followers following profilePic");
         res.json(users);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -15,8 +15,26 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
-            .select("name email followers following");
+            .select("name email followers following profilePic bio");
         if (!user) return res.status(404).json({ message: "User not found" });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// UPLOAD PROFILE PICTURE (stored as base64 in MongoDB)
+export const uploadProfilePic = async (req, res) => {
+    try {
+        const { imageBase64 } = req.body;
+        if (!imageBase64) return res.status(400).json({ message: "No image data" });
+
+        const user = await User.findByIdAndUpdate(
+            req.user._id,
+            { profilePic: imageBase64 },
+            { new: true }
+        ).select("name email followers following profilePic bio");
+
         res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });

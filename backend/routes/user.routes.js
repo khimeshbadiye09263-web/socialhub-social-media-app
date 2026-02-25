@@ -1,17 +1,13 @@
 import express from "express";
-import {
-    getAllUsers,
-    getUserById,
-    followUser,
-    unfollowUser
-} from "../controllers/user.controller.js";
 import protect from "../middleware/auth.middleware.js";
+import { getAllUsers, getUserById, followUser, unfollowUser, uploadProfilePic } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
-router.get("/", protect, getAllUsers);   // GET  /api/users
-router.get("/:id", protect, getUserById);  // GET  /api/users/:id
-router.post("/follow/:id", protect, followUser);   // POST /api/users/follow/:id
-router.post("/unfollow/:id", protect, unfollowUser); // POST /api/users/unfollow/:id
+router.get("/", protect, getAllUsers);
+router.get("/:id", protect, getUserById);
+router.post("/follow/:id", protect, followUser);
+router.post("/unfollow/:id", protect, unfollowUser);
+router.post("/upload-pic", protect, uploadProfilePic);
 
 export default router;

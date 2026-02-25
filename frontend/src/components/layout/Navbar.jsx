@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { Link, useNavigate } from "react-router-dom";
+import Avatar from "../Avatar";
 
 export default function Navbar() {
 
@@ -47,10 +48,7 @@ export default function Navbar() {
 
                     {/* Profile avatar */}
                     <Link to="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                            style={{ background: "linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}>
-                            {user?.name?.charAt(0).toUpperCase()}
-                        </div>
+                        <Avatar name={user?.name} src={user?.profilePic} size="w-8 h-8" textSize="text-xs" />
                         <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 hidden sm:block">{user?.name}</span>
                     </Link>
 

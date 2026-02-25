@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { likePost, deletePost, addComment, deleteComment } from "../../services/api";
+import Avatar from "../Avatar";
 
 export default function PostCard({ post, refresh }) {
 
@@ -61,11 +62,8 @@ export default function PostCard({ post, refresh }) {
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3">
                 <div className="flex items-center gap-3">
-                    <Link to={`/user/${post.user?._id}`}>
-                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 hover:opacity-80 transition-opacity"
-                            style={{ background: "linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}>
-                            {post.user?.name?.charAt(0).toUpperCase()}
-                        </div>
+                    <Link to={`/user/${post.user?._id}`} className="hover:opacity-80 transition-opacity">
+                        <Avatar name={post.user?.name} src={post.user?.profilePic} size="w-9 h-9" textSize="text-sm" />
                     </Link>
                     <div>
                         <Link to={`/user/${post.user?._id}`}

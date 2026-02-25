@@ -29,6 +29,29 @@ export const getUsers = () => api.get("/users").then(r => r.data);
 export const getUserById = (id) => api.get(`/users/${id}`).then(r => r.data);
 export const followUser = (id) => api.post(`/users/follow/${id}`);
 export const unfollowUser = (id) => api.post(`/users/unfollow/${id}`);
+export const uploadProfilePic = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            // Compress image using canvas to max 300x300
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const max = 300;
+                const ratio = Math.min(max / img.width, max / img.height);
+                canvas.width = img.width * ratio;
+                canvas.height = img.height * ratio;
+                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+                const imageBase64 = canvas.toDataURL("image/jpeg", 0.8);
+                api.post("/users/upload-pic", { imageBase64 })
+                    .then(r => resolve(r.data))
+                    .catch(reject);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+};
 
 // Messages / Chat
 export const getConversations = () => api.get("/messages/conversations").then(r => r.data);
